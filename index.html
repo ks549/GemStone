@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html ng-app="plunker">
+
+  <head>
+    <meta charset="utf-8" />
+    <title>AngularJS Plunker</title>
+    <link data-require="bootstrap@*" data-semver="4.0.5" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" />
+    <script data-require="bootstrap@*" data-semver="4.0.5" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js"></script>
+    <script>document.write('<base href="' + document.location + '" />');</script>
+    <link rel="stylesheet" href="style.css" />
+    <script data-require="angular.js@1.5.x" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.11/angular.min.js" data-semver="1.5.11"></script>
+    <script src="app.js"></script>
+  </head>
+
+  <body ng-controller="MainCtrl as m">
+    <div ng-repeat="x in m.product|orderBy:'name'" ng-hide="x.soldout">
+      <h1>{{x.name|uppercase}}</h1>
+      <em>{{x.price|currency}}</em>
+      <p>{{x.desc}}</p>
+      <button ng-show="x.stock">Add to Cart</button>
+   
+      <section>
+        <ul class="nav nav-pills">
+          <li ng-class="{active:tab === 1}" >
+          <a class="bg-info text-white" href ng-click="tab = 1">Description |</a>
+          </li>
+          <li ng-class="{active:tab === 2}">
+          <a class="bg-info text-white" href ng-click="tab = 2">  Specification | </a>
+          </li>
+          <li ng-class="{active:tab === 3}">
+          <a class="bg-info text-white" href ng-click="tab = 3"> Review</a>
+          </li>
+        </ul>
+      
+        <div class="panel"  ng-show="tab === 1">
+          <h3>Description</h3>
+          <p>{{x.desc}}</p>
+        </div>
+        <div class="panel" ng-show="tab === 2">
+          <h3>Specification</h3>
+          <p>I am {{1+2}}</p>
+        </div>
+        <div class="panel" ng-show="tab === 3">
+          <h4>Review</h4>
+          <ul ng-repeat="v in x.reviews" style="list-style: none;">
+            <li>
+              <h6>{{v.name}}</h6>
+              <em>STAR: {{v.star}}</em>
+              <div><h7>{{v.body}}</h7></div>
+              <h7>{{v.contact}}</h7>
+            </li>
+          </ul>
+          <form name="reviewform" ng-controller="ReviewController as reviewCtrl"
+                                      ng-submit="reviewform.$valid && reviewCtrl.addReview(x)" novalidate>
+            <blockquote>
+              <ul style="list-style: none;"><li>
+              <h6>{{reviewCtrl.review.name}}</h6>
+              <em>{{reviewCtrl.review.star}}</em>
+              <div><h7>{{reviewCtrl.review.body}}</h7></div>
+              <h7>{{reviewCtrl.review.contact}}</h7>
+              </li>
+            </ul>
+            </blockquote>
+            
+            <input type="textbox" ng-model="reviewCtrl.review.name" placeholder="Enter your name" required/>*
+            <div><select ng-model="reviewCtrl.review.star" required>
+              <option value="STAR: 1">1 star</option>
+              <option value="STAR: 2">2 stars</option>
+              <option value="STAR: 3">3 stars</option>
+              <option value="STAR: 4">4 stars</option>
+              <option value="STAR: 5">5 stars</option>
+            </select>*
+            </div>
+            <div>
+            <Textarea ng-model="reviewCtrl.review.body" placeholder="add your comment" required></textarea>*
+            </div>
+            <div>
+            <input type="email" ng-model="reviewCtrl.review.contact" placeholder="email id" required/>*
+            </div>
+            <input class="bg-primary text-white" type="submit" value="submit"/> 
+          </form>
+          
+        </div>
+      
+      </section>
+    </div>
+   
+  </body>
+
+</html>
